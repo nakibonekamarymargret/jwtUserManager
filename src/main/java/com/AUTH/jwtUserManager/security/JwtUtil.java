@@ -3,10 +3,9 @@ package com.AUTH.jwtUserManager.security;
 import io.jsonwebtoken.*;
 import java.util.Date;
 
-import static io.jsonwebtoken.Jwts.*;
-
 public class JwtUtil {
     private static final String SECRET_KEY = "mysecret12345rtkey";
+
 
     // Generate JWT Token
     public static String generateToken(String username) {

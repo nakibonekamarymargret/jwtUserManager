@@ -2,6 +2,7 @@ package com.AUTH.jwtUserManager.configs;
 
 import com.AUTH.jwtUserManager.security.JwtFilter;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -13,21 +14,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private  JwtFilter jwtFilter;
-
-
     public SecurityFilterChain SecurityFilterChain(HttpSecurity http) throws Exception {
-          http
-                  .csrf(AbstractHttpConfigurer::disable)
+         return http
+                  .csrf(AbstractHttpConfigurer::disable)//.csrf(csrf->csrf.disable())
                   .authorizeHttpRequests(auth -> auth
                           .requestMatchers("/auth/register", "/auth/login").permitAll()  // Allow public access
                           .anyRequest().authenticated()
                   )
-                  .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
-        // Add custom JWT filter
-        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-
-        return http.build();
+                  .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                  .httpBasic(Customizer.withDefaults())
+                 .build();
     }
 }
