@@ -5,13 +5,16 @@ import com.AUTH.jwtUserManager.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
+//    private final RoleRepository roleRepository;
 
     public UserService(UserRepository userRepository){
         this.userRepository=userRepository;
+//        this.roleRepository = roleRepository;
     }
 
 //    Creating a user
@@ -30,5 +33,9 @@ public class UserService {
                     userDetails.getProfilePicUrl(), id);
         }
 
+    }
+    public void deleteUserById(Long userId) {
+        Optional<Users> userOptional = userRepository.findById(userId);
+        userOptional.ifPresent(userRepository::delete);
     }
 }
