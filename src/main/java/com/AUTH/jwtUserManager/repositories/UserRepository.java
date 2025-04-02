@@ -10,7 +10,16 @@ import com.AUTH.jwtUserManager.models.Users;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<Users,Long> {
+public interface UserRepository extends JpaRepository<Users, Long> {
+    //    Find user by username
+    Optional<Users> findByUsername(String username);
+
+    Boolean existsByUsername(String username);
+
+    Boolean existsByEmail(String email);
+
+    void deleteUserById(Long userId);
+
     @Modifying
     @Transactional//used when we are working with multiple fields
     @Query("UPDATE Users u SET u.username = COALESCE(?1, u.username), " +
@@ -18,7 +27,6 @@ public interface UserRepository extends JpaRepository<Users,Long> {
             " u.profilePicUrl = COALESCE(?3, u.profilePicUrl) WHERE u.id = ?4")
     void updateUsers(String username, String password, String profilePictureUrl, Long id);
 
-//    Find user by username
-    Optional<Users> findByUsername(String username);
+
 }
 
