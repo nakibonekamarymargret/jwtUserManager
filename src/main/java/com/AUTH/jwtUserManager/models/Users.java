@@ -1,53 +1,30 @@
 package com.AUTH.jwtUserManager.models;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-
-import java.util.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
-@Table(name = "users",
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = "username"),
-                @UniqueConstraint(columnNames = "email")
-        }
-)
 public class Users {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    private int id;
 
-    @NotBlank
-    @Size(max = 20)
     private String username;
-
-    @NotBlank
     private String password;
-
-    @NotBlank
-    @Size(max = 50)
-    @Email
-    private String email;
-
-    @Column(name = "profile_pic")
-    private String profilePicUrl;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Roles> roles = new HashSet<>();
-
-    public Users() {
-    }
-
-    public Users(String username, String password, String profilePicUrl, String email) {
+    public Users() {}
+    public Users(String username, String password){
         this.username = username;
         this.password = password;
-        this.profilePicUrl = profilePicUrl;
-        this.email = email;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getUsername() {
@@ -65,35 +42,9 @@ public class Users {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    public String getProfilePicUrl() {
-        return profilePicUrl;
+    public String toString(){
+        return String.format("Users[id=%d,username='%s',password = '%s']",
+                id, username,password);
     }
 
-    public void setProfilePicUrl(String profilePicUrl) {
-        this.profilePicUrl = profilePicUrl;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Set<Roles> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Roles> roles) {
-        this.roles = roles;
-    }
-
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id= id;
-    }
 }

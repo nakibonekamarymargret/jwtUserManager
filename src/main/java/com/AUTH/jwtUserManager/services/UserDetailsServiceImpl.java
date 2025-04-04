@@ -1,9 +1,8 @@
 package com.AUTH.jwtUserManager.services;
 
+import com.AUTH.jwtUserManager.models.UserPrincipal;
 import com.AUTH.jwtUserManager.models.Users;
 import com.AUTH.jwtUserManager.repositories.UserRepository;
-import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,11 +17,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
-    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Users user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
-
-        return UserDetailsImpl.build(user);
+        Users user= userRepository.findByUsername(username);
+        if(user==null){
+            System.out.println("User not found");
+            throw new UsernameNotFoundException("User not found");
+        }
+        return new UserPrincipal(user);
     }
 }
