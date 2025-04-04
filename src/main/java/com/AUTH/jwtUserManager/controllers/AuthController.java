@@ -1,22 +1,16 @@
 package com.AUTH.jwtUserManager.controllers;
 
 import com.AUTH.jwtUserManager.models.Users;
-import com.AUTH.jwtUserManager.services.UserService;
-import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.security.web.csrf.CsrfToken;
-import org.springframework.web.bind.annotation.GetMapping;
+import com.AUTH.jwtUserManager.services.AuthService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @RestController
-public class UserController {
-    private final UserService userService;
+public class AuthController {
+    private final AuthService userService;
 
-    public UserController(UserService userService) {
+    public AuthController(AuthService userService) {
         this.userService = userService;
     }
 
